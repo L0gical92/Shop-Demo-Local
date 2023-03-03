@@ -58,7 +58,7 @@ function displayProducts(jsonData) {
         <img src='${product.image}' alt='' class='image m-4 "' width="100vw">
         <div>
         <p class="card-text">${product.description}</p>
-        <div class="text-center"> Price:<b><span id="price">${product.price}</span>$</b></div>
+        <div class="text-center"> Price:<b><span id="price${product.id}">${product.price}</span>$</b></div>
         
         <div class=" text-center" id="productButtons">
         <button class="btn btn-primary m-5" onclick="addToCart('${product.id}');window.location.href='cart.html';">Buy now</button>
