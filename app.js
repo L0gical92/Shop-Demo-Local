@@ -10,10 +10,6 @@ const logoEl = document.getElementById("logo");
 const cartEl = document.getElementById("cart");
 const checkoutcontainerEl = document.getElementById("checkOutContainer");
 const homeEl = document.getElementById("home");
-const electronicsEl = document.getElementById("electronics");
-const jeweleryEl = document.getElementById("jewelery");
-const mensEl = document.getElementById("mens");
-const womensEl = document.getElementById("womens");
 const checkoutCartEl = document.getElementById("checkOutCart");
 const totalEl = document.getElementById("grandTotal");
 //checkout form variables 
@@ -27,13 +23,12 @@ const shippingEl = document.getElementById("shipping");
 const submitCheckoutEl = document.getElementById("contactForm");
 const checkOutSecEl = document.getElementById("checkOutSec");
 const confirmationMSGEl = document.getElementById("confirmationMSG");
+const categoriesEl = document.getElementById("categories");
 let runningTotal = 0;
 
-//Declaring cartItems, its value depends on localStorage
-let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-if (typeof itemsCountEl !== 'undefined' && itemsCountEl != null) {
-  itemsCountEl.innerHTML = cartItems.length;
-}
+
+
+
 fetchingProducts();
 //fetching products from Fake store API
 function fetchingProducts() {
@@ -46,8 +41,40 @@ function fetchingProducts() {
       }
     });
 }
-
-
+//Fetching categories from localAPi
+fetch("http://localhost:8080/products/categories" ) 
+    .then(result => result.json())
+    .then(data => insertingCategories(data));
+//Declaring cartItems, its value depends on localStorage
+let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+if (typeof itemsCountEl !== 'undefined' && itemsCountEl != null) {
+  itemsCountEl.innerHTML = cartItems.length;
+}
+//Inserting categorie names
+function insertingCategories(apiCategories){
+  let categories = apiCategories;
+  for (let i = 0; i < categories.length; i++) {
+    categoriesEl.innerHTML += `<li><a class="dropdown-item" href="index.html">${categories[i]}</a></li>`;
+}
+categoriesEl.addEventListener("click", function(event) {
+  if (event.target.classList.contains("dropdown-item")) {
+    const category = event.target.textContent;
+    localStorage.setItem("apiPath", `products/categories/${category}`);
+  }
+});
+/* category1El.addEventListener("click", function () {
+  localStorage.setItem("apiPath", "products/categories/electronics");
+});
+category2El.addEventListener("click", function () {
+  localStorage.setItem("apiPath", "products/categories/jewelery");
+});
+category3El.addEventListener("click", function () {
+  localStorage.setItem("apiPath", "products/categories/men's clothing");
+});
+category4El.addEventListener("click", function () {
+  localStorage.setItem("apiPath", "products/categories/women's clothing");
+}); */
+}
 //Displaying products in main page.
 function displayProducts(jsonData) {
   const productArray = jsonData;
@@ -299,15 +326,8 @@ logoEl.addEventListener("click", function () {
 homeEl.addEventListener("click", function () {
   localStorage.setItem("apiPath", "");
 });
-electronicsEl.addEventListener("click", function () {
-  localStorage.setItem("apiPath", "products/categories/electronics");
-});
-jeweleryEl.addEventListener("click", function () {
-  localStorage.setItem("apiPath", "products/categories/jewelery");
-});
-mensEl.addEventListener("click", function () {
-  localStorage.setItem("apiPath", "products/categories/men's clothing");
-});
-womensEl.addEventListener("click", function () {
-  localStorage.setItem("apiPath", "products/categories/women's clothing");
-});
+
+ 
+
+  
+
